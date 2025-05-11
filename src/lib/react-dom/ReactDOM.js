@@ -11,7 +11,6 @@ function updateContainer(element, container) {
     type: container.nodeName.toLowerCase(),
     stateNode: container,
   })
-  
   scheduleUpdateOnFiber(fiber)
 }
 
@@ -24,7 +23,6 @@ class ReactDOMRoot {
    * @param {*} children 传入一个vnode
    */
   render(children) {
-    console.log(children)
     updateContainer(children, this._internalRoot)
   }
 }

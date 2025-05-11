@@ -13,8 +13,8 @@ export const Update = 0b0000000000000000000100 // 4
 // 删除节点
 export const Deletion = 0b0000000000000000001000 // 8
 
-export function isStr(s) {
-  return typeof s === 'string'
+export function isStrOrNum(s) {
+  return typeof s === 'string' || typeof s === 'number'
 }
 
 export function isFn(fn) {
@@ -33,7 +33,7 @@ export function updateNode(node, prevValue, newValue) {
   // 处理旧值
   Object.keys(prevValue).forEach((k) => {
     if (k === 'children') {
-      isStr(newValue[k]) && (node.textContent = '')
+      isStrOrNum(newValue[k]) && (node.textContent = '')
     } else if (k.startsWith('on')) {
       let eventName = k.slice(2).toLocaleLowerCase()
       eventName === 'change' && (eventName = 'input')
@@ -45,7 +45,7 @@ export function updateNode(node, prevValue, newValue) {
   // 处理新值
   Object.keys(newValue).forEach((k) => {
     if (k === 'children') {
-      isStr(newValue[k]) && (node.textContent = newValue[k])
+      isStrOrNum(newValue[k]) && (node.textContent = newValue[k])
     } else if (k.startsWith('on')) {
       let eventName = k.slice(2).toLowerCase()
       eventName === 'change' && (eventName = 'input')
@@ -54,4 +54,8 @@ export function updateNode(node, prevValue, newValue) {
       node[k] = newValue[k]
     }
   })
+}
+
+export function getCurrentTime() {
+  return performance.now()
 }

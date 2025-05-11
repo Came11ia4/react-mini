@@ -1,3 +1,5 @@
+import { Placement, Update, updateNode } from '../shared/utils'
+
 function getParentDOM(wip) {
   let temp = wip
   while (temp) {
@@ -11,8 +13,14 @@ function getParentDOM(wip) {
 
 function commitNode(wip) {
   const parentNodeDOM = getParentDOM(wip.return)
-  if(wip.stateNode) {
+  const { flags, stateNode } = wip
+  console.log(flags);
+  if (flags & Placement && stateNode) {
     parentNodeDOM.appendChild(wip.stateNode)
+  }
+
+  if (flags & Update && stateNode) {
+    updateNode(wip.stateNode, wip.alternate.props, wip.props)
   }
 }
 

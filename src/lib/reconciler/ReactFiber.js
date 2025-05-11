@@ -1,4 +1,4 @@
-import { Placement, isFn, isStr, isUndefined } from '../shared/utils'
+import { Placement, isFn, isStrOrNum, isUndefined } from '../shared/utils'
 import {
   ClassComponent,
   Fragment,
@@ -9,9 +9,9 @@ import {
 
 function createFiber(vnode, returnFiber) {
   const fiber = {
-    type: vnode.type,
-    key: vnode.key,
-    props: vnode.props,
+    type: vnode?.type,
+    key: vnode?.key,
+    props: vnode?.props,
 
     stateNode: null,
     child: null,
@@ -21,9 +21,10 @@ function createFiber(vnode, returnFiber) {
     flags: Placement,
     index: 0,
     alernate: null,
+    memorizedState: null,
   }
   const type = fiber.type
-  if (isStr(type)) {
+  if (isStrOrNum(type)) {
     fiber.tag = HostComponent
   } else if (isFn(type)) {
     fiber.tag = type.prototype.isReactComponent
@@ -32,7 +33,7 @@ function createFiber(vnode, returnFiber) {
   } else if (isUndefined(type)) {
     fiber.tag = HostText
     // 文本节点的props没有children属性所以需要手动添加一个
-    fiber.props = { children: vnode}
+    fiber.props = { children: vnode }
   } else {
     fiber.tag = Fragment
   }
