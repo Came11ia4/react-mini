@@ -20,7 +20,6 @@ function updateWorkInProgressHook() {
   if (current) {
     // 非初次渲染
     currentRenderFiber.memorizedState = current.memorizedState;
-    console.log("rerender", workInProgressHook, currentRenderFiber);
     if (workInProgressHook) {
       workInProgressHook = hook = workInProgressHook.next;
       currentHook = currentHook.next;
@@ -28,7 +27,6 @@ function updateWorkInProgressHook() {
       workInProgressHook = hook = currentRenderFiber.memorizedState;
       currentHook = current.memorizedState;
     }
-    console.log("[]", workInProgressHook, currentRenderFiber);
   } else {
     // 初次渲染
     hook = {
@@ -57,7 +55,6 @@ function updateWorkInProgressHook() {
 function dispatchReducerAction(fiber, hook, reducer, action) {
   hook.memorizedState = reducer ? reducer(hook.memorizedState) : action;
   // 计算完成后 该fiber节点就会变成旧fiber
-  console.log(hook.memorizedState);
   fiber.alternate = { ...fiber };
   // 设置兄弟节点状态为null
   // 1. 更新隔离机制,确保本次更新仅处理当前fiber节点和其子节点，避免触发兄弟节点的更新流程
