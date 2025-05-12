@@ -1,12 +1,11 @@
 function Component(props) {
-  this.props = props
+  this.props = props;
 }
 //
-Component.prototype.isReactComponent = true
-
+Component.prototype.isReactComponent = true;
 
 const React = {
-  Component
-}
+  Component,
+};
 
-export default React
+export default React;

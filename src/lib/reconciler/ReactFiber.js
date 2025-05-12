@@ -1,11 +1,11 @@
-import { Placement, isFn, isStrOrNum, isUndefined } from '../shared/utils'
+import { Placement, isFn, isStrOrNum, isUndefined } from "../shared/utils";
 import {
   ClassComponent,
   Fragment,
   FunctionComponent,
   HostComponent,
   HostText,
-} from './ReactWorkTags'
+} from "./ReactWorkTags";
 
 function createFiber(vnode, returnFiber) {
   const fiber = {
@@ -20,24 +20,24 @@ function createFiber(vnode, returnFiber) {
 
     flags: Placement,
     index: 0,
-    alernate: null,
+    alternate: null,
     memorizedState: null,
-  }
-  const type = fiber.type
+  };
+  const type = fiber.type;
   if (isStrOrNum(type)) {
-    fiber.tag = HostComponent
+    fiber.tag = HostComponent;
   } else if (isFn(type)) {
     fiber.tag = type.prototype.isReactComponent
       ? ClassComponent
-      : FunctionComponent
+      : FunctionComponent;
   } else if (isUndefined(type)) {
-    fiber.tag = HostText
+    fiber.tag = HostText;
     // 文本节点的props没有children属性所以需要手动添加一个
-    fiber.props = { children: vnode }
+    fiber.props = { children: vnode };
   } else {
-    fiber.tag = Fragment
+    fiber.tag = Fragment;
   }
-  return fiber
+  return fiber;
 }
 
-export default createFiber
+export default createFiber;

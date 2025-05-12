@@ -1,11 +1,10 @@
-import beginWork from './ReactBeginWork'
-import completeWork from './ReactFiberCompleteWork'
-import commitWorker from './ReactFiberCommitWork'
-import schedulerCallback from '../scheduler/Scheduler'
+import beginWork from "./ReactBeginWork";
+import completeWork from "./ReactFiberCompleteWork";
+import commitWorker from "./ReactFiberCommitWork";
+import schedulerCallback from "../scheduler/Scheduler";
 
-let wip = null
-let wipRoot = null
-
+let wip = null;
+let wipRoot = null;
 
 // function scheduleUpdateOnFiber(fiber) {
 //   wip = fiber
@@ -16,12 +15,12 @@ let wipRoot = null
 
 /**
  * 进行fiber节点的调度工作
- * @param {*} fiber 
+ * @param {*} fiber
  */
 function scheduleUpdateOnFiber(fiber) {
-  wip = fiber
-  wipRoot = fiber
-  schedulerCallback(workLoop)
+  wip = fiber;
+  wipRoot = fiber;
+  schedulerCallback(workLoop);
 }
 
 /**
@@ -40,12 +39,12 @@ function scheduleUpdateOnFiber(fiber) {
 
 function workLoop(time) {
   while (wip) {
-    if (time < 0) return false
-    performUnitofWork()
+    if (time < 0) return false;
+    performUnitOfWork();
   }
 
   if (!wip && wipRoot) {
-    commitRoot()
+    commitRoot();
   }
 }
 
@@ -56,30 +55,30 @@ function workLoop(time) {
  * 3. 提交副作用
  * 4. 进行渲染
  */
-function performUnitofWork() {
-  beginWork(wip)
+function performUnitOfWork() {
+  beginWork(wip);
 
   if (wip.child) {
-    wip = wip.child
-    return
+    wip = wip.child;
+    return;
   }
-  completeWork(wip)
+  completeWork(wip);
 
-  let next = wip
+  let next = wip;
   while (next) {
     if (next.sibling) {
-      wip = next.sibling
-      return
+      wip = next.sibling;
+      return;
     }
-    next = next.return
-    completeWork(next)
+    next = next.return;
+    completeWork(next);
   }
-  wip = null
+  wip = null;
 }
 
 function commitRoot() {
-  commitWorker(wipRoot)
-  wip = null
+  commitWorker(wipRoot);
+  wipRoot = null;
 }
 
-export default scheduleUpdateOnFiber
+export default scheduleUpdateOnFiber;

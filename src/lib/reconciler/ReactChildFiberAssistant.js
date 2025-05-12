@@ -1,4 +1,4 @@
-import { Placement } from "../shared/utils"
+import { Placement } from "../shared/utils";
 
 export function placedIndex(
   newFiber,
@@ -6,27 +6,27 @@ export function placedIndex(
   newIndex,
   shouldTrackSideEffects
 ) {
-  newFiber.index = newIndex
+  newFiber.index = newIndex;
 
   if (!shouldTrackSideEffects) {
-    return lastPlacedIndex
+    return lastPlacedIndex;
   }
 
-  const current = newFiber.alternate
+  const current = newFiber.alternate;
   if (current) {
-    const oldIndex = current.index
+    const oldIndex = current.index;
     if (oldIndex < lastPlacedIndex) {
       // 如果老的fiber节点的index小于当前lastPlacedIndex，说明老的fiber节点需要移动
-      newFiber.flags |= Placement
-      return lastPlacedIndex
+      newFiber.flags |= Placement;
+      return lastPlacedIndex;
     } else {
       // 如果老的fiber节点的index大于等于当前lastPlacedIndex，说明老的fiber节点不需要移动
-      return lastPlacedIndex
+      return oldIndex;
     }
   } else {
     // 初次渲染
-    newFiber.flags = Placement
-    return lastPlacedIndex
+    newFiber.flags |= Placement;
+    return lastPlacedIndex;
   }
 }
 /**
@@ -36,8 +36,10 @@ export function placedIndex(
  * @param {*} returnFiber 父fiber节点
  */
 export function updatePreviousFiber(prevFiber, newFiber, returnFiber) {
-  prevFiber ? (prevFiber.sibling = newFiber) : (returnFiber.child = newFiber)
-  return newFiber
+  prevFiber !== null
+    ? (prevFiber.sibling = newFiber)
+    : (returnFiber.child = newFiber);
+  return newFiber;
 }
 /**
  * 判断两个是否可以复用
@@ -46,27 +48,27 @@ export function updatePreviousFiber(prevFiber, newFiber, returnFiber) {
  * @returns
  */
 export function sameNode(a, b) {
-  return a && b && a.type === b.type && a.key === b.key
+  return a && b && a.type === b.type && a.key === b.key;
 }
 /**
  * @param {*} returnFiber 父节点
  * @param {*} childToDelete 需要删除的节点
  */
 export function deleteChild(returnFiber, childToDelete) {
-  const deletions = returnFiber.deletions
+  const deletions = returnFiber.deletions;
   deletions
     ? returnFiber.deletions.push(childToDelete)
-    : (returnFiber.deletions = [childToDelete])
+    : (returnFiber.deletions = [childToDelete]);
 }
 /**
  * @param {*} returnFiber 父节点
  * @param {*} currentFirstChild 需要删除的第一个子节点
  */
 export function deleteRemainingChildren(returnFiber, currentFirstChild) {
-  let childToDelete = currentFirstChild
+  let childToDelete = currentFirstChild;
   while (childToDelete) {
-    deleteChild(returnFiber, childToDelete)
-    childToDelete = childToDelete.sibling
+    deleteChild(returnFiber, childToDelete);
+    childToDelete = childToDelete.sibling;
   }
 }
 
@@ -75,13 +77,16 @@ export function deleteRemainingChildren(returnFiber, currentFirstChild) {
  * @param {*} oldFiber 旧节点
  */
 export function mapRemainingChildren(oldFiber) {
-  const existigChildren = new Map()
-  let existingChild = oldFiber
+  const existingChildren = new Map();
+  let existingChild = oldFiber;
 
   while (existingChild) {
-    existigChildren.set(existingChild.key || existingChild.index, existingChild)
-    existingChild = existingChild.sibling
+    existingChildren.set(
+      existingChild.key || existingChild.index,
+      existingChild
+    );
+    existingChild = existingChild.sibling;
   }
 
-  return existigChildren
+  return existingChildren;
 }

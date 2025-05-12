@@ -1,5 +1,5 @@
-import createFiber from '../reconciler/ReactFiber'
-import scheduleUpdateOnFiber from '../reconciler/ReactFiberWorkLoop'
+import createFiber from "../reconciler/ReactFiber";
+import scheduleUpdateOnFiber from "../reconciler/ReactFiberWorkLoop";
 
 /**
  *
@@ -10,20 +10,20 @@ function updateContainer(element, container) {
   const fiber = createFiber(element, {
     type: container.nodeName.toLowerCase(),
     stateNode: container,
-  })
-  scheduleUpdateOnFiber(fiber)
+  });
+  scheduleUpdateOnFiber(fiber);
 }
 
 class ReactDOMRoot {
   constructor(container) {
-    this._internalRoot = container
+    this._internalRoot = container;
   }
   /**
    *
    * @param {*} children 传入一个vnode
    */
   render(children) {
-    updateContainer(children, this._internalRoot)
+    updateContainer(children, this._internalRoot);
   }
 }
 
@@ -34,8 +34,8 @@ const ReactDOM = {
    * @returns 返回一个带有 render 方法的对象
    */
   createRoot(container) {
-    return new ReactDOMRoot(container)
+    return new ReactDOMRoot(container);
   },
-}
+};
 
-export default ReactDOM
+export default ReactDOM;
