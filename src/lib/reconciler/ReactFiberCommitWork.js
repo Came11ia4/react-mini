@@ -1,4 +1,6 @@
 import { Placement, Update, updateNode } from "../shared/utils";
+import { FunctionComponent } from "./ReactWorkTags";
+import { invokeHooks } from "./ReactChildFiberAssistant";
 
 function getParentDOM(wip) {
   let temp = wip;
@@ -20,6 +22,10 @@ function commitNode(wip) {
 
   if (flags & Update && stateNode) {
     updateNode(wip.stateNode, wip.alternate.props, wip.props);
+  }
+
+  if(wip.tag === FunctionComponent) {
+    invokeHooks(wip);
   }
 }
 

@@ -1,3 +1,4 @@
+import schedulerCallback from "../scheduler/Scheduler";
 import { Placement } from "../shared/utils";
 
 export function placedIndex(
@@ -89,4 +90,23 @@ export function mapRemainingChildren(oldFiber) {
   }
 
   return existingChildren;
+}
+
+/**
+ * 执行副作用函数
+ * @param {*} wip 
+ */
+export function invokeHooks(wip) {
+  const { updateQueue } = wip;
+
+  for(let i = 0; i < updateQueue.length; i++) {
+    const effect = updateQueue[i];
+    if(effect.destroy) {
+      effect.destroy();
+    }
+
+    schedulerCallback(() => {
+      effect.destroy = effect.create();
+    })
+  }
 }

@@ -2,10 +2,16 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import React from './lib/react/React'
-import { useState } from './lib/react/ReactHooks'
+import { useState, useEffect } from './lib/react/ReactHooks'
 
 function App() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    console.log('change');
+    return () => {console.log('clean')}
+  }, [count])
+
   return (
     <div>
       <div>
